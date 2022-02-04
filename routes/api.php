@@ -20,8 +20,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => '/user'],function(){
+
+    //authunticate
     Route::post('/login',[UserController::class,'login']);
     Route::post('/register',[UserController::class,'register']);
-    Route::post('/logout',[UserController::class,'logout'])->middleware('auth:api');
-    Route::post('/delete/{user}',[UserController::class,'delete']);
+
+    //middleware api
+    Route::group(['middleware' => 'auth:api'],function(){
+        Route::post('/logout',[UserController::class,'logout']);
+        Route::post('/delete',[UserController::class,'delete']);
+    });
 });

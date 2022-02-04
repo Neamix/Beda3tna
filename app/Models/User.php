@@ -75,6 +75,11 @@ class User extends Authenticatable
         return self::validateResult('success',Auth::user()); 
     }
 
+    public function deleteInstance() {
+        $this->delete();
+        return self::validateResult('success',Auth::user());
+    }
+
     public function logout() {
         $this->token()->revoke();
         return self::validateResult('success');
