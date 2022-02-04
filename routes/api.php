@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,15 @@ Route::group(['prefix' => '/user'],function(){
     //middleware api
     Route::group(['middleware' => 'auth:api'],function(){
         Route::post('/logout',[UserController::class,'logout']);
-        Route::post('/delete',[UserController::class,'delete']);
+        Route::delete('/delete',[UserController::class,'delete']);
+    });
+});
+
+Route::group(['prefix' => '/category'],function(){
+
+    //middleware api
+    Route::group(['middleware' => 'auth:api'],function(){
+        Route::post('/upsert',[CategoryController::class,'upsert']);
+        Route::delete('/delete/{category}',[CategoryController::class,'delete']);
     });
 });
