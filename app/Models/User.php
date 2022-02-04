@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 
@@ -44,19 +45,39 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function upsertInstance() {
-
+    static function upsertInstance($data) {
         $user = self::updateOrCreate(
-            ['id' => $this->id ?? null],
+            ['id' => $data->id ?? null],
             [
-                'name' => $this->name,
-                'email' => $this->email,
-                'password' => Hash::make($this->password)
+                'name' => $data->name,
+                'email' => $data->email,
+                'password' => Hash::make($data->password)
             ]
         );
+        
+        if(!Auth::attempt($data->all())) {
+            return self::validateResult('fail','error occure');
+        }
 
-        return self::validationResult('success',$user);
+        $user->token = Auth::user()->createToken('auth_token')->accessToken;
 
+        return self::validateResult('success',$user,);
+
+    }
+
+    static function login($user) {
+        if(!Auth::attempt($user->all())) {
+            return self::validateResult('fail','error occure');
+        }
+
+        Auth::user()->token = Auth::user()->createToken('auth_token')->accessToken;
+
+        return self::validateResult('success',Auth::user()); 
+    }
+
+    public function logout() {
+        $this->token()->revoke();
+        return self::validateResult('success');
     }
 
     public function isAdmin() {
