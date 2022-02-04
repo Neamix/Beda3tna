@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use App\Trait\validationTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use validationTrait,HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -41,4 +43,55 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function upsertInstance() {
+
+        $user = self::updateOrCreate(
+            ['id' => $this->id ?? null],
+            [
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => Hash::make($this->password)
+            ]
+        );
+
+        return self::validationResult('success',$user);
+
+    }
+
+    public function isAdmin() {
+        if($this->priviledge->whereIn('id',[SUPER_ADMIN,SYSTEM_ADMIN])->count()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function isSuperAdmin() {
+        if($this->priviledge->whereIn('id',[SUPER_ADMIN])->count()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Use Priviledge Request in validation
+     */
+
+    public function toggleAdmin() {
+        $this->priviledge->toggle([SYSTEM_ADMIN]);
+        return self::validationResult('success',$this->priviledge);
+    }
+
+    public function toggleSuperAdmin() {
+        $this->priviledge->toggle([SUPER_ADMIN]);
+
+        return self::validationResult('success',$this->priviledge);
+    }
+
+    public function togglePriviledge($priviledge) {
+        $this->priviledge->toggle($priviledge);
+        return self::validationResult('success',$this->priviledge);
+    }
 }
