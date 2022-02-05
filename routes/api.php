@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,15 @@ Route::group(['prefix' => '/brand'],function () {
     Route::group(['middleware' => 'auth:api'],function(){
         Route::post('/upsert',[BrandController::class,'upsert']);
         Route::delete('/delete/{brand}',[BrandController::class,'delete']);
+    });
+
+});
+
+Route::group(['prefix' => '/product'],function () {
+
+    Route::group(['middleware' => 'auth:api'],function(){
+        Route::post('/upsert',[ProductController::class,'upsert']);
+        Route::delete('/delete/{product}',[ProductController::class,'delete']);
     });
 
 });
