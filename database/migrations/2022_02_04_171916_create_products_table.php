@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('price');
-            $table->string('currency');
+            $table->foreignId('brand_id');
             $table->timestamps();
         });
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -31,6 +32,7 @@ Route::group(['prefix' => '/user'],function(){
         Route::post('/logout',[UserController::class,'logout']);
         Route::delete('/delete',[UserController::class,'delete']);
     });
+
 });
 
 Route::group(['prefix' => '/category'],function(){
@@ -40,4 +42,14 @@ Route::group(['prefix' => '/category'],function(){
         Route::post('/upsert',[CategoryController::class,'upsert']);
         Route::delete('/delete/{category}',[CategoryController::class,'delete']);
     });
+
+});
+
+Route::group(['prefix' => '/brand'],function () {
+
+    Route::group(['middleware' => 'auth:api'],function(){
+        Route::post('/upsert',[BrandController::class,'upsert']);
+        Route::delete('/delete/{brand}',[BrandController::class,'delete']);
+    });
+
 });
