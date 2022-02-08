@@ -12,8 +12,11 @@ class Order extends Model
 {
     use HasFactory,validationTrait;
 
+    protected $guarded = [];
+
     static function upsertInstance($data) {
         $orderCost = self::getOrderTotalCost($data->products_ids);
+       
         $order = self::updateOrCreate(
             ['id' => $data->id],
             [
