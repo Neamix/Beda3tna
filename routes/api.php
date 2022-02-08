@@ -4,6 +4,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,3 +75,13 @@ Route::group(['prefix' => '/order'],function () {
     });
 
 });
+
+Route::group(['prefix' => '/sale'],function () {
+
+    Route::group(['middleware' => 'auth:api'],function(){
+        Route::post('/upsert',[SaleController::class,'upsert']);
+        Route::delete('/delete/{sale}',[SaleController::class,'delete']);
+    });
+
+});
+
