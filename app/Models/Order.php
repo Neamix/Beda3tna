@@ -26,6 +26,9 @@ class Order extends Model
             ]
         );
 
+        $order->products()->sync($data->products_ids);
+        $order->products = $order->products()->get();
+
         return self::validateResult('success',$order);
     }
 
@@ -43,7 +46,12 @@ class Order extends Model
     }
 
     public function deleteInstance() {
+        $this->products()->detach();
         $this->delete();
         return self::validateResult('success',$this);
+    }
+
+    public function products() {
+        return $this->belongsToMany(Product::class)->withTimestamps();
     }
 }
