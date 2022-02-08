@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -60,6 +61,15 @@ Route::group(['prefix' => '/product'],function () {
     Route::group(['middleware' => 'auth:api'],function(){
         Route::post('/upsert',[ProductController::class,'upsert']);
         Route::delete('/delete/{product}',[ProductController::class,'delete']);
+    });
+
+});
+
+Route::group(['prefix' => '/order'],function () {
+
+    Route::group(['middleware' => 'auth:api'],function(){
+        Route::post('/upsert',[OrderController::class,'upsert']);
+        Route::delete('/delete/{product}',[OrderController::class,'delete']);
     });
 
 });
