@@ -35,7 +35,7 @@ class Order extends Model
 
         foreach($products_ids as $product_id) {
             $product = Product::find($product_id);
-            $productPriceSummition += $product->price;
+            $productPriceSummition += $product->product_price;
         }
 
         return $productPriceSummition;

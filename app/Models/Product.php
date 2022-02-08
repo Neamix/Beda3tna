@@ -11,7 +11,7 @@ class Product extends Model
     use HasFactory,validationTrait;
 
     protected $guarded = [];
-    protected $with = ['categories'];
+    protected $with = ['categories','brand','sale'];
 
     static function upsertInstance($data) {
         $product = self::updateOrCreate(
@@ -44,4 +44,30 @@ class Product extends Model
     public function brand() {
         return $this->belongsTo(Brand::class);
     }
+
+    public function sale() {
+        return $this->hasMany(Sale::class);
+    }
+
+    public function getSalePrecentAttribute() {
+        $getSale = $this->sale()->first();
+       
+        if($getSale) {
+            return $getSale->precent;
+        } else {
+            return null;
+        }
+
+    }
+
+    public function getProductPriceAttribute() {
+        if($this->sale_precent) {
+            $saleDiscount = $this->price * ($this->sale_precent/100);
+            return $this->price - $saleDiscount;
+        }  else {
+            return $this->price;
+        }
+    }
+
+    
 }
