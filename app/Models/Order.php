@@ -41,4 +41,9 @@ class Order extends Model
         return $productPriceSummition;
 
     }
+
+    public function deleteInstance() {
+        $this->delete();
+        return self::validateResult('success',$this);
+    }
 }

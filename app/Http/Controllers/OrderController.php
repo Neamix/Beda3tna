@@ -12,4 +12,9 @@ class OrderController extends Controller
     {
         return Order::upsertInstance($request);
     }
+
+    public function delete(Order $order)
+    {
+        return $order->deleteInstance();
+    }
 }
