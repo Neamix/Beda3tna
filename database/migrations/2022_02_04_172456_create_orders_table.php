@@ -18,7 +18,6 @@ class CreateOrdersTable extends Migration
             $table->integer('cost');
             $table->foreignId('user_id');
             $table->date('date');
-            $table->foreignId('currency_id');
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return dd(Auth::user()->logout());
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return dd(Auth::user()->logout());
+// });
 
 Route::group(['prefix' => '/user'],function(){
 
@@ -69,7 +70,7 @@ Route::group(['prefix' => '/order'],function () {
 
     Route::group(['middleware' => 'auth:api'],function(){
         Route::post('/upsert',[OrderController::class,'upsert']);
-        Route::delete('/delete/{product}',[OrderController::class,'delete']);
+        Route::delete('/delete/{order}',[OrderController::class,'delete']);
     });
 
 });
