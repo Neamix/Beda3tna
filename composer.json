@@ -8,6 +8,7 @@
         "php": "^7.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "^2.7",
         "laravel/framework": "^8.75",
         "laravel/passport": "^10.3",
         "laravel/sanctum": "^2.11",
@@ -32,7 +33,7 @@
         "psr-4": {
             "Tests\\": "tests/"
         },
-        "files": ["app/constants.php"]
+        "files": ["app/constants.php","app/systemVariables.php"]
     },
     "scripts": {
         "post-autoload-dump": [
