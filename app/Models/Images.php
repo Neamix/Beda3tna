@@ -16,9 +16,9 @@ class Images extends Model
         foreach($images as $key => $image) {
             $name = uniqid() . '.png';
             $dimintionsArray = [
-                'large' => getSystemVariable('image.large'),
-                'medium' => getSystemVariable('image.medium'),
-                'small'  => getSystemVariable('image.small')
+                'large' => getSystemVariable('imageLarge'),
+                'medium' => getSystemVariable('imageMedium'),
+                'small'  => getSystemVariable('imageSmall')
             ];
 
             $idsArray = [];
