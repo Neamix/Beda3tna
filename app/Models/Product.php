@@ -11,7 +11,7 @@ class Product extends Model
     use HasFactory,validationTrait;
 
     protected $guarded = [];
-    protected $with = ['categories','brand','sale'];
+    protected $with = ['categories','brand','sale','images'];
 
     static function upsertInstance($data) {
         $product = self::updateOrCreate(
@@ -27,11 +27,20 @@ class Product extends Model
         $product->categories = $product->categories()->get();
         $product->brand = $product->brand()->get();
 
+        if($data->images) {
+            $srcs = Images::storeImages($data->images);
+            $images = $product->images()->sync($srcs);
+            $product->images = $product->images()->get();
+        }
+
+
+
         return self::validateResult('success',$product);
     }
 
     public function deleteInstance() {
         $this->categories()->detach();
+        $this->sale()->delete();
         $this->delete();
 
         return self::validateResult('success',$this);
@@ -71,6 +80,10 @@ class Product extends Model
         }  else {
             return $this->price;
         }
+    }
+
+    public function images() {
+        return $this->belongsToMany(Images::class,'image_product');
     }
 
     
