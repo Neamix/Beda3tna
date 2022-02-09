@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\ValidationTrait;
+use App\Traits\validationTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
