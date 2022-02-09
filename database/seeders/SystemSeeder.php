@@ -16,19 +16,19 @@ class SystemSeeder extends Seeder
     {
         System::updateOrCreate([
             'id' => 1,
-            'key' => 'image.large',
+            'key' => 'imageLarge',
             'value' => '1080X720'
         ]);
 
         System::updateOrCreate([
             'id' => 2,
-            'key' => 'image.medium',
+            'key' => 'imageMedium',
             'value' => '720X820'
         ]);
 
         System::updateOrCreate([
             'id' => 3,
-            'key' => 'image.small',
+            'key' => 'imageSmall',
             'value' => '380X150'
         ]);
     }
