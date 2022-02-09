@@ -30,6 +30,7 @@ Route::group(['prefix' => '/user'],function(){
     //authunticate
     Route::post('/login',[UserController::class,'login']);
     Route::post('/register',[UserController::class,'register']);
+    Route::post('/',[UserController::class,'index']);
 
     //middleware api
     Route::group(['middleware' => 'auth:api'],function(){
@@ -82,6 +83,7 @@ Route::group(['prefix' => '/sale'],function () {
         Route::post('/upsert',[SaleController::class,'upsert']);
         Route::delete('/delete/{sale}',[SaleController::class,'delete']);
     });
+    
 
 });
 
